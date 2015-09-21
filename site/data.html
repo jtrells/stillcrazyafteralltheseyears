@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Bootstrap *must* tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>CS424: Still Crazy After All These Years!s</title>
+
+    <link href="./bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap -->
+	<script type="text/javascript" src="./d3/d3.min.js"></script> <!-- D3 -->
+</head>
+
+<body>
+	<div class="main-wrapper">
+		<!-- Fixed navbar -->
+		<div class="container">
+			<nav class="navbar navbar-default">
+		      <div class="container">
+		        <div class="navbar-header">
+		          <a class="navbar-brand page_title" href="#">Still Crazy After All These Years!</a>
+		        </div>
+		        <div id="navbar" class="navbar-collapse collapse" style="width:900px; padding:20px">
+		          <ul class="nav nav-pills navbar-right">
+		            <li><a class="menu_label" href="/index.html">Home</a></li>
+		            <li><a class="menu_label" href="/howtouse.html">How to Use</a></li>
+		            <li><a class="menu_label" href="/application.html">Application</a></li>
+		            <li class="active"><a class="menu_label" href="#">Data</a></li>
+		            <li><a class="menu_label" href="/instructions.html">Instructions</a></li>
+		            <li><a class="menu_label" href="/findings.html">Findings</a></li>
+		          </ul>
+		        </div>
+		      </div>
+		    </nav>
+	    </div>
+
+	   	<div class="container">
+	    	<div class="row">
+	    		<div class="col-md-12" role="main">
+	    			<h1 id="overview" class="page-header">Application Data</h1>
+	    			<p class="lead">
+	    				The countries and US-states population information were obtained from the <a href="http://www.census.gov/" target="_blank">United States Census Bureau</a> website. Specifically, from the following links:
+	    			</p>
+	    			<ul>
+	    				<li><a href="http://www.census.gov/popest/data/state/asrh/2014/SC-EST2014-AGESEX-CIV.html" target="_blank">Annual Estimates of the Civilian Populations by Single Year of Age and Sex for the United States and States: April 1, 2010 to July 1, 2014</a></li>
+	    				<li><a href="https://www.census.gov/population/international/data/idb/region.php" target="_blank">International Database</a>: Population per single year report from 2010 to 2014 for Peru, Uruguay, Japan, Germany and Mexico</li>
+	    			</ul>
+
+	    			<h2>Data treatment</h2>
+	    			<p>
+	    				The following observations were taken into account to format the data for the web application:
+	    			</p>
+	    			<ol>
+	    				<li>The data gathered for the United States (and States) had a different format than the data from the International Database</li>
+		    				<table class="table"> 
+		    					<caption>Example of data for United States and States</caption>
+		    					<thead>
+		    						<tr>
+		    							<th>SUMLEV</th>
+		    							<th>REGION</th>
+		    							<th>DIVISION</th>
+		    							<th>STATE</th>
+		    							<th>NAME</th>
+		    							<th>SEX</th>
+		    							<th>AGE</th>
+		    							<th>ESTBASE2010</th>
+		    							<th>POPEST2010</th>
+		    							<th>POPEST2011</th>
+		    							<th>POPEST2012</th>
+		    							<th>POPEST2013</th>
+		    							<th>POPEST2014</th>
+		    						</tr>
+		    					</thead>
+		    					<tbody>
+		    						<tr>
+		    							<td>10</td>
+		    							<td>0</td>
+		    							<td>0</td>
+		    							<td>0</td>
+		    							<td>United States</td>
+		    							<td>0</td>
+		    							<td>0</td>
+		    							<td>17,231,123</td>
+		    							<td>18,231,123</td>
+		    							<td>19,231,123</td>
+		    							<td>20,231,123</td>
+		    							<td>19,232,221</td>
+		    							<td>19,800,221</td>
+		    						</tr>
+		    						<tr>
+		    							<td>10</td>
+		    							<td>0</td>
+		    							<td>0</td>
+		    							<td>0</td>
+		    							<td>United States</td>
+		    							<td>0</td>
+		    							<td>999</td>
+		    							<td>17,231,123</td>
+		    							<td>18,231,123</td>
+		    							<td>19,231,123</td>
+		    							<td>20,231,123</td>
+		    							<td>19,232,221</td>
+		    							<td>19,800,221</td>
+		    						</tr>	    						
+		    					</tbody>
+		    				</table>
+
+		    				<table class="table"> 
+		    					<caption>Example of data from the International Database</caption>
+		    					<thead>
+		    						<tr>
+		    							<th>Region</th>
+		    							<th>Country</th>
+		    							<th>Year</th>
+		    							<th>Age</th>
+		    							<th>Both Sexes</th>
+		    							<th>Male Population</th>
+		    							<th>Female Population</th>
+		    							<th>Percent Both</th>
+		    							<th>Percent Male</th>
+		    							<th>Percent Female</th>
+		    							<th>Sex Ratio</th>
+		    						</tr>
+		    					</thead>
+		    					<tbody>
+		    						<tr>
+		    							<td>Custom Region</td>
+		    							<td>Germany</td>
+		    							<td>2010</td>
+		    							<td>0</td>
+		    							<td>675,273</td>
+		    							<td>346,562</td>
+		    							<td>328,711</td>
+		    							<td>0.8</td>
+		    							<td>0.9</td>
+		    							<td>0.8</td>
+		    							<td>96.4</td>	    							
+		    						</tr>
+		    						<tr>
+		    							<td>Custom Region</td>
+		    							<td>Germany</td>
+		    							<td>2010</td>
+		    							<td>85-90</td>
+		    							<td>675,273</td>
+		    							<td>346,562</td>
+		    							<td>328,711</td>
+		    							<td>0.8</td>
+		    							<td>0.9</td>
+		    							<td>0.8</td>
+		    							<td>96.4</td>
+		    						</tr>	    
+		    						<tr>
+		    							<td>Custom Region</td>
+		    							<td>Germany</td>
+		    							<td>2010</td>
+		    							<td>100+</td>
+		    							<td>675,273</td>
+		    							<td>346,562</td>
+		    							<td>328,711</td>
+		    							<td>0.8</td>
+		    							<td>0.9</td>
+		    							<td>0.8</td>
+		    							<td>96.4</td>
+		    						</tr>
+		    						<tr>
+		    							<td>Custom Region</td>
+		    							<td>Germany</td>
+		    							<td>2010</td>
+		    							<td>Total</td>
+		    							<td>675,273</td>
+		    							<td>346,562</td>
+		    							<td>328,711</td>
+		    							<td>0.8</td>
+		    							<td>0.9</td>
+		    							<td>0.8</td>
+		    							<td>96.4</td>
+		    						</tr>		    												
+		    					</tbody>
+		    				</table>
+
+		    				<table class="table"> 
+		    					<caption>Differences and Project Decisions</caption>
+		    					<thead>
+		    						<tr>
+		    							<th>United States & States Dataset</th>
+		    							<th>International Database</th>
+		    							<th>Project Decision</th>
+		    						</tr>
+		    					</thead>
+		    					<tbody>
+		    						<tr>
+		    							<td>Year data using a columns approach
+		    							</td>
+		    							<td>Year data using a rows approach
+		    							</td>
+		    							<td>Year data using a columns approach
+		    							</td>
+		    						</tr>
+		    						<tr>
+		    							<td>Sex data using a rows approach
+		    							</td>
+		    							<td>Sex data using a colums approach
+		    							</td>
+		    							<td>Sex data using a rows approach. However, only took into account registers for totals males and females.
+		    							</td>
+		    						</tr>
+		    						<tr>
+		    							<td>Yearly age distribution for people 85 years old and more is summed in a 85+ register.
+		    							</td>
+		    							<td>Used the following groups for elder people: 85-90, 90-00, 100+.
+		    							</td>
+		    							<td>Group these data in a range 85+ as there wasn't any way to get yearly information from both datasets. As a consequence, the bar chart always shows a bigger bar for 85+ when using the "1 Year Range".
+		    							</td>
+		    						</tr>
+		    						<tr>
+		    							<td>Total population for a given place/year used the Age = 999 filter
+		    							</td>
+		    							<td>Total population for a given place/year used the Age = Total filter
+		    							</td>
+		    							<td>Age = 999 filter
+		    							</td>
+		    						</tr>
+		    					</tbody>
+		    				</table>
+
+	    				<li>The website allows the user to download data with 1 Year Range or 5 Years Range. However, the requirement was to show the data in a 10 Years Range.</li>
+	    					<ul>
+	    						<li>To format the United States & States dataset, I developed a program in python that received the file in its original format and created a new worksheet with the data formatted.</li>
+	    						<li>For python I used the <a href="https://openpyxl.readthedocs.org/en/latest/" target="_blank"> openpyxl</a> library</li>
+	    						<li>To format the International Database dataset, I used MS Excel tools.</li>
+	    					</ul>
+	    			</ol>
+
+	    		</div>
+	    	</div>
+	    </div>
+
+	</div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+</body>

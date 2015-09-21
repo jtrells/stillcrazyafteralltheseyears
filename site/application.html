@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Bootstrap *must* tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>CS424: Age Distribution</title>
+	
+    <link href="./bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap -->
+	<script type="text/javascript" src="./d3/d3.min.js"></script> <!-- D3 -->
+
+	<!-- Import files to render maps, barcharts and pie charts -->
+	<script type="text/javascript" src="./js/app.js"></script>
+	<script type="text/javascript" src="./js/bar.js"></script>
+	<script type="text/javascript" src="./js/pie.js"></script>
+	<link href="./css/bar.css" rel="stylesheet">
+	<link href="./css/pie.css" rel="stylesheet">
+	<link href="./css/app.css" rel="stylesheet">
+
+	<style>
+
+		#states {
+		    -webkit-column-count:2;
+		    -moz-column-count:2;
+		    -ms-column-count:2;
+		    -o-column-count:2;
+		    column-count:2;
+		    columns:2;
+		    
+		    margin: 5px 10px 0px 25px;
+		    background-color: #fff;
+		    border-color:#ccc;
+		    /*-webkit-border-radius: 50px;
+			-moz-border-radius: 50px;
+			border-radius: 50px;*/
+		}
+
+		#states p:first-child {
+			padding-top: 10px;
+			padding-left: 5px;
+		}
+
+		#states p {
+			padding-left: 5px;
+		}
+
+		#map_container {
+			margin: 5px 0px 0px 0px;
+			background-color: #d9d9d9;
+		}
+	</style>
+</head>
+<body>
+	<div class="main-wrapper">
+		<!-- Fixed navbar -->
+		<div class="container">
+			<nav class="navbar navbar-default">
+		      <div class="container">
+		        <div class="navbar-header">
+		          <a class="navbar-brand page_title" href="#">Still Crazy After All These Years!</a>
+		        </div>
+		        <div id="navbar" class="navbar-collapse collapse" style="width:2000px; padding:20px">
+		          <ul class="nav nav-pills navbar-right">
+		            <li><a class="menu_label" href="#home">Home</a></li>
+		            <li><a class="menu_label" href="#howtouse">How to Use</a></li>
+		            <li class="active"><a class="menu_label" href="#application">Application</a></li>
+		            <li><a class="menu_label" href="#data">Data</a></li>
+		            <li><a class="menu_label" href="#instructions">Instructions</a></li>
+		            <li><a class="menu_label" href="#findings">Findings</a></li>
+		          </ul>
+		        </div>
+		      </div>
+		    </nav>
+	    </div>
+
+		<div class="content-row group">
+			<div class="col-1">
+				<div class="btn-group btn-group-justified" role="group">
+					<div class="btn-group" id="cont-btn-usa" role="group"></div>
+				</div>
+				<div id="states" ></div>
+			</div>
+			<div id="controls" class="col-2">
+				<div class="map" id="map"></div>
+				<hr />
+				<div id="countries" class="btn-group btn-group-justified" role="group">
+				</div>
+				<hr />
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<span class="panel-title events-title">Events in Soccer History</span>
+					</div>
+					<div  class="panel-body">
+						<ul id="event-list" class="list-group">
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="graphs_container" class="col-3">
+				<div id="graph_container_top">
+					<div id="pc0" class="state-graph free_pc"></div>
+					<div id="pc1" class="state-graph free_pc"></div>
+					<div id="pc2" class="state-graph free_pc"></div>
+					<div id="pc3" class="state-graph free_pc"></div>
+					<div id="pc4" class="state-graph free_pc"></div>
+				</div>
+				<div id="graph_container_bottom">
+					<div id="bc0" class="state-graph free_bc"></div>
+					<div id="bc1" class="state-graph free_bc"></div>
+					<div id="bc2" class="state-graph free_bc"></div>
+					<div id="bc3" class="state-graph free_bc"></div>
+					<div id="bc4" class="state-graph free_bc"></div>
+				</div>
+				<div id="dashboard-control-1" class="btn-group btn-group-justified" role="group">
+					<div class="btn-group" role="group">
+						<button type="button" id="btn1yr" class="btn btn-default btn-lg age-range">1 Year Range</button>
+					</div>
+					<div class="btn-group" role="group">
+						<button type="button" id="btn10yr" class="btn btn-primary btn-lg age-range">10 Years Range</button>
+					</div>
+				</div>
+				<div id="dashboard-control-2" class="btn-group btn-group-justified" role="group">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		var app = new App("#main", "#states");
+		app.init();
+		//var mp = new Map();
+		//mp.init("#main");
+
+		d3.select("#btn1yr").on("click", function(d){
+			updateSelectedButton("#btn1yr");
+
+			for(var i = 0; i < app.app.values.length; i++)
+				app.app.values[i].updateRange(1);
+		});
+
+		d3.select("#btn10yr").on("click", function(d){
+			updateSelectedButton("#btn10yr");
+
+			for(var i = 0; i < app.app.values.length; i++)
+				app.app.values[i].updateRange(10);
+		});
+
+		function updateSelectedButton(id){
+			d3.selectAll(".age-range").classed("btn-primary", false);
+			d3.selectAll(".age-range").classed("btn-default", true);
+			d3.select(id).classed("btn-primary", true);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+/*
+ * Styles for Barchart objects.
+ */
+
+.bar_rect {
+  fill: steelblue;
+ }
+
+ .bar_rect:hover {
+ 	fill: brown;
+ }
+
+ .bar-label {
+      text-anchor: end;
+ }
+
+ .axis {
+ 	font: 10px sans-serif;
+ }
+
+ .axis line,
+ .axis path {
+   fill: none;
+   stroke: #000;
+   shape-rendering: crispEdges;
+ }
+
+ .x.axis text {
+      font-size: 13px;
+ }
+ 
+ .x.axis path {
+      display:none;
+ }
+
+.bar_age_tooltip {
+	background-color: #eee;
+	box-shadow: 0 0 5px #999999;
+	color: #333;
+	display: none;
+	font-size: 12px;
+	left: 130px;
+	padding: 10px;
+	position: absolute;
+	text-align: center;
+	top: 95px;
+	width: 100px;
+	z-index: 10;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	pointer-events: none;
+}
+.bar_age_label {
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.event_tooltip {
+	background-color: #fdd0a2;
+	box-shadow: 0 0 5px #999999;
+	color: 333;
+	display: none;
+	font-size: 12px;
+	left: 130px;
+	padding: 10px;
+	position: absolute;
+	text-align: center;
+	top: 95px;
+	width: 100px;
+	z-index: 10;
+}
+.event_name {
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+}
+.event_year {
+	font-style: italic;
+	font-size: 10px;
+}
+.event_country {
+	font-style: normal;
+	font-size: 10px;
+}
+
+@media only screen and (min-width: 8000px) {
+	.tick text {
+		font-size: 25px;
+	}
+	.bar_age_tooltip{
+		width: 350px;
+	}
+	.bar_age_label {
+		font-size: 50px;
+	}
+	.bar_age_count{
+		font-size: 40px;
+	}
+	.bar_age_percent{
+		font-size: 40px;
+	}
+	.event_tooltip {
+		width: 400px;
+	}
+	.bar_event_percent{
+		font-size: 27px;
+	}
+	.bar_event_text{
+		font-size: 23px;
+	}
+
+}

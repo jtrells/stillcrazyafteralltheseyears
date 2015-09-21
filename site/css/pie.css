@@ -1,0 +1,113 @@
+.arc path {
+	  stroke: #fff;
+}
+.arc:hover{
+	fill: black;
+}
+.pie_tooltip {
+	background-color: #eee;
+	box-shadow: 0 0 5px #999999;
+	color: 333;
+	display: none;
+	font-size: 12px;
+	left: 130px;
+	padding: 10px;
+	position: absolute;
+	text-align: center;
+	top: 95px;
+	width: 100px;
+	z-index: 10;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+	box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+}
+.piett_label {
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+}
+.event_tooltip {
+	background-color: #fdd0a2;
+	box-shadow: 0 0 5px #999999;
+	color: 333;
+	display: none;
+	font-size: 12px;
+	left: 130px;
+	padding: 10px;
+	position: absolute;
+	text-align: center;
+	top: 95px;
+	width: 100px;
+	z-index: 10;
+}
+.event_name {
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+}
+.event_year {
+	font-style: italic;
+	font-size: 10px;
+}
+.event_country {
+	font-style: normal;
+	font-size: 10px;
+}
+.event_percent{
+	font-weight: bold;
+}
+.event_percent.remember{
+	color: #31a354;
+}
+.event_percent.no-remember{
+	color: #f03b20;
+}
+
+@media only screen and (min-width: 8000px) {
+	.pie_tooltip {
+		width: 350px;
+	}
+	.piett_label {
+		font-size: 45px;
+	}
+	.piett_count {
+		font-size: 40px;
+	}
+	.piett_percent {
+		font-size: 40px;
+	}
+	.state_name{
+		font-size: 45px;
+		font-weight: bold;
+	}
+	.state_pop{
+		font-size: 30px;
+	}
+	.state_year{
+		font-size: 30px;
+	}
+	.slice_label{
+		font-size: 30px;
+	}
+	.event_tooltip {
+		width: 500px;
+		-webkit-border-radius: 50px;
+		-moz-border-radius: 50px;
+		border-radius: 50px;
+	}
+	.event_name {
+		font-size: 45px;
+	}
+	.event_year {
+		font-size: 40px;
+	}
+	.event_country {
+		font-size: 40px;
+	}
+	.event_percent{
+		font-size: 50px;
+	}
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Bootstrap *must* tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>CS424: Age Distribution</title>
+	
+    <link href="./bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap -->
+	<script type="text/javascript" src="./d3/d3.min.js"></script> <!-- D3 -->
+	<script type="text/javascript" src="./js/pie.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/pie.css">
+
+	<style>
+		/* Page Styles
+		=================================== */
+		* {
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		html,
+		body {
+		 height: 100%;
+		}
+		body {
+			font: normal 1.1em/1.5 sans-serif;
+			color: #222;
+			background-color: #edeff0;
+		}
+		.buttons-container {
+          width: 520px;
+          margin-bottom: 25px;
+	    }
+	    .button {
+          float: left;
+          margin-left: 10px;
+          font-weight: lighter;
+          cursor: pointer;
+	    }
+
+	</style>
+</head>
+<body>
+	<div id="buttons"></div>
+	<div id="buttons_states"></div>
+	<div id="buttons_ages"></div>
+	<div id="buttons_events"></div>
+	<div id="graph_container" style="width:100%;height:80%;">
+	</div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		var pieChart = null;
+		d3.csv("./data/usa_data_1y.csv", function(err, data) {
+			var data1y = data;
+
+			d3.csv("./data/usa_data_10y.csv", function(err, data) {
+				var data10y = data;
+				pieChart = new PieChart(data1y, data10y, 2014, "California", 10, "#graph_container");
+				pieChart.init();
+			});
+		});
+
+		var buttonYears = [2010, 2011, 2012, 2013, 2014];
+		var ageRanges = [1, 10];
+		var states = ["California", "Illinois", "Hawaii", "New York", "Alabama"];
+		var events = [
+			{
+				name: "Event 1",
+				place: "Peru",
+				id : "1",
+				year: "1965"
+			},
+			{
+				name: "Event 2",
+				place: "United States",
+				id : "2",
+				year: "1980"
+			},
+			{
+				name: "Event 3",
+				place: "URSS",
+				id : "3",
+				year: "1943"
+			},
+			{
+				name: "Event 4",
+				place: "Argentina",
+				id : "4",
+				year: "1978"
+			},
+			{
+				name: "Event 5",
+				place: "El Salvador",
+				id : "5",
+				year: "2014"
+			},
+			{
+				name: "Event 6",
+				place: "United States",
+				id : "6",
+				year: "1980"
+			},
+			{
+				name: "Event 7",
+				place: "Sri Lanka",
+				id : "7",
+				year: "1950"
+			},
+			{
+				name: "Event 8",
+				place: "Italia",
+				id : "8",
+				year: "1945"
+			},
+			{
+				name: "Event 9",
+				place: "Suiza",
+				id : "9",
+				year: "1993"
+			},
+			{
+				name: "Event 10",
+				place: "Japon",
+				id : "10",
+				year: "2000"
+			},
+
+		];
+
+		var buttons = d3.select("#buttons")
+						 .attr("class","buttons-container")
+						 .selectAll("div").data(buttonYears)
+					   .enter().append("div")
+					     .text(function(d){ return d; })
+					     .attr("class","button");
+		var buttonsStates = d3.select("#buttons_states")
+						 .attr("class","buttons-container")
+						 .selectAll("div").data(states)
+					   .enter().append("div")
+					     .text(function(d){ return d; })
+					     .attr("class","button");
+		var buttonsAges = d3.select("#buttons_ages")
+						 .attr("class","buttons-container")
+						 .selectAll("div").data(ageRanges)
+					   .enter().append("div")
+					     .text(function(d){ return d; })
+					     .attr("class","button");
+		var buttonsEvents = d3.select("#buttons_events")
+						 .attr("class","buttons-container")
+						 .selectAll("div").data(events)
+					   .enter().append("div")
+					     .text(function(d){ return d.name; })
+					     .attr("class","button");
+
+		buttons.on("click", function(d){
+			pieChart.update(d,pieChart.pie.zone, pieChart.pie.agesRange);
+		})
+		buttonsStates.on("click", function(d){
+			pieChart.update(pieChart.pie.year,d,pieChart.pie.agesRange);
+		})
+		buttonsAges.on("click", function(d){
+			pieChart.update(pieChart.pie.year,pieChart.pie.zone,d);
+		})
+		buttonsEvents.on("click", function(d){
+			pieChart.addEvent(d);
+		})
+
+		window.onresize = function() { 
+			var x = 1;
+			pieChart.resize();
+		}
+		//d3.select(window).on("resize", bc.updateWindow());
+	</script>
+</body>
+</html>
