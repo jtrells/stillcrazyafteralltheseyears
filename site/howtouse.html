@@ -26,10 +26,10 @@
 		          <ul class="nav nav-pills navbar-right">
 		            <li><a class="menu_label" href="/index.html">Home</a></li>
 		            <li class="active"><a class="menu_label" href="#">How to Use</a></li>
-		            <li><a class="menu_label" href="/application.html">Application</a></li>
-		            <li><a class="menu_label" href="#data">Data</a></li>
-		            <li><a class="menu_label" href="#instructions">Instructions</a></li>
-		            <li><a class="menu_label" href="#findings">Findings</a></li>
+		            <li><a class="menu_label" href="./application.html">Application</a></li>
+		            <li><a class="menu_label" href="./data.html">Data</a></li>
+		            <li><a class="menu_label" href="./instructions.html">Instructions</a></li>
+		            <li><a class="menu_label" href="./findings.html">Findings</a></li>
 		          </ul>
 		        </div>
 		      </div>
@@ -78,19 +78,16 @@
 	    					<p>
 	    						To select another country, use the toogle button bar below the map. The available options include <strong>Perú</strong>, <strong>Uruguay</strong>, <strong>Japan</strong>, <strong>Germany</strong> and <strong>Mexico</strong>. To deselect any option, just click on it again.
 	    					</p>
-	    				</div>
-	    			</div>
-	    			<div class="row">
-	    				<div class="col-md-6">
+	    					<img src="../resources/states.png" class="img-responsive" alt="Selection Control 1">
 	    				</div>
 	    				<div class="col-md-6">
 	    					<p>
 	    						On the lower right zone of the selection controls area, you can find a list of interesting <strong>Events in Soccer History</strong>. Each line displays a different event: the event name on the left side and its year on the right. Just click on any event to see how the charts are updated.
 	    					</p>
-	    				</div>
-	    			</div>
-	    			<div class="row">
-	    				<div class="col-md-12">
+	    					<div  class="panel-body">
+								<ul id="event-list" class="list-group">
+								</ul>
+							</div>
 	    					<p>
 	    						Selected elements are shown with a light blue background and white letters while not selected ones appear with a white background and black letters:
 	    					</p>
@@ -182,5 +179,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script>
+    	var events = [{id : 1,name: "Maracanazo",year: 1950,place: "Brazil",url: "http://www.youtube.com/watch?v=oOMwUpVgYt4"},
+					  {id : 2,name: "Dennis Bergkamp touches the sky",year: 1998,place: "France",url: "https://youtu.be/XsZkCFoqSBs"}];
+		var soccerEvents = d3.select("#event-list")
+				.selectAll("li")
+				.data(events)
+			.enter().append("li")
+			    .attr("class", "list-group-item event-item")
+			  	.text( function(d, i) { return d.name })
+			.append("span")
+				.attr("class", "badge event-year")
+				.text( function(d){ return d.year })
+
+    </script>
 </body>
 </html>

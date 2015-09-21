@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Bootstrap *must* tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>CS424: Still Crazy After All These Years!</title>
+
+    <link href="./bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet"> <!-- Bootstrap -->
+	<script type="text/javascript" src="./d3/d3.min.js"></script> <!-- D3 -->
+</head>
+
+<body>
+	<div class="main-wrapper">
+		<!-- Fixed navbar -->
+		<div class="container">
+			<nav class="navbar navbar-default">
+		      <div class="container">
+		        <div class="navbar-header">
+		          <a class="navbar-brand page_title" href="#">Still Crazy After All These Years!</a>
+		        </div>
+		        <div id="navbar" class="navbar-collapse collapse" style="width:900px; padding:20px">
+		          <ul class="nav nav-pills navbar-right">
+		            <li><a class="menu_label" href="/index.html">Home</a></li>
+		            <li><a class="menu_label" href="/howtouse.html">How to Use</a></li>
+		            <li><a class="menu_label" href="/application.html">Application</a></li>
+		            <li><a class="menu_label" href="/data.html">Data</a></li>
+		            <li><a class="menu_label" href="/instructions.html">Instructions</a></li>
+		            <li class="active"><a class="menu_label" href="#">Findings</a></li>
+		          </ul>
+		        </div>
+		      </div>
+		    </nav>
+	    </div>
+
+	   	<div class="container">
+	    	<div class="row">
+	    		<div class="col-md-12" role="main">
+	    			<h1 class="page-header">Findings</h1>
+	    			<h2>What US States are the most different population-wise?</h2>
+	    			<img src="../resources/comp1.png" class="img-responsive" alt="Comparison US States 1">
+	    			<img src="../resources/comp2.png" class="img-responsive" alt="Comparison US States 2">
+	    			<p>
+	    				The United States age distribution trend presents a similar percentage of population between ages 0-50 and then starts decaying; faster for ages 70+. This trend is similar in states like Georgia, California, Illinois and others. Nevertheless, some states like Maine, New Hampshire or Vermont have different distributions where one age range between 40-50s is predominant, and younger and older populations are much smaller. District of Columbia has a similar behavior but its predominant age is between 20-30s. However, these latest populations are much smaller than bigger areas like California, Illinois or Georgia.
+	    			</p>
+	    			<p>
+	    				Utah has an interesting distribution where there are more younger people being the kids predominant. From there, the percentages decay in a smoother way.
+	    			</p>
+
+
+	    			<h2>Aging</h2>
+	    			<p>Japan and Germany are the two populations of the dataset with more aging people. At 2014, about 1/3 of Japan's population (~40M) was over 60 years old. Several <a href="http://www.japantimes.co.jp/news/2015/09/21/national/social-issues/japan-increasingly-gray-people-80-older-top-10-million" target="_blank">news articles</a> discuss this topic. Regarding Germany, about 27% of its population (~21.5M) is over 60. 
+	    			</p>
+	    			<img src="../resources/elderly.png" class="img-responsive" alt="Elder Population">
+	    			<br />
+	    			<p>
+	    				However, Peru and Mexico have a bigger population of young people which could be caused by several reasons. One of them is the lack of sexual education among younger people that leads to a failure in birth control methods. Moreover, Peru and Mexico besides being latino countries, are places were the Catholic Church still have a big influence on decisions like sexual education on schools, use of birth control methods, abortion, and so on.
+	    			</p>
+	    			<img src="../resources/youngers.png" class="img-responsive" alt="Younger Population">
+	    		</div>
+	    	</div>
+	    </div>
+    </div>
+
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+</body>
