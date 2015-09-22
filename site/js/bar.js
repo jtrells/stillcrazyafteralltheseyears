@@ -3,7 +3,7 @@
 */
 function BarChart(data1y, data10y, year, zone, agesRange, target, typeZone) {
 	this.bchart = {};
-	this.bchart.margin = {top: 10, right: 10, bottom: 40, left: 80};
+	this.bchart.margin = {top: 20, right: 10, bottom: 40, left: 90};
 	this.bchart.height = 0;
 	this.bchart.width = 0;
 	this.bchart.chartHeight = 0;
@@ -119,6 +119,9 @@ BarChart.prototype = {
 		}
 	},
 
+	/* Add an event to the bar chart. The drawing is mainly done on the resize function
+	   as each bar is removed and redrawn. 
+	*/
 	addEvent: function(event){
 		var self = this,
 		    bar = this.bchart,
@@ -144,6 +147,8 @@ BarChart.prototype = {
 		}
 	},
 
+	/* Draws the bars at the bottom of the bar chart 
+	*/
 	drawEvent: function(event, pos) {
 		var self = this,
 			bar = this.bchart;
@@ -177,7 +182,7 @@ BarChart.prototype = {
 					.attr("height", bar.eventHeight)
 					.attr("x", x)
 					.attr("y", bar.chartHeight + bar.eventPadTop + pos * bar.eventHeight)
-					.attr("fill", "#a6bddb");	
+					.attr("fill", "#black");	
 				eventBar.on("mouseover", function(){ eventMouseOver(event, percent); });
 				eventBar.on("mouseout", function(){ eventMouseOut(); });
 
@@ -221,6 +226,8 @@ BarChart.prototype = {
 		return n;
 	},
 
+	/* Creates a new bar chart. Also used when updating the age range 
+	*/
 	create: function(){
 		var self = this,
 			bchart = this.bchart,
@@ -285,7 +292,7 @@ BarChart.prototype = {
 			var yPosition = parseFloat(d3.select(this).attr("y")) / 2 + bchart.chartHeight / 2;
 
 			bchart.tooltip.select(".bar_age_label").html("Ages: " + ageLabel);
-			bchart.tooltip.select(".bar_age_count").html(formatter(population) + " hab");
+			bchart.tooltip.select(".bar_age_count").html(formatter(population) + " ppl");
 			bchart.tooltip.select(".bar_age_percent").html(percent + "%");
 			bchart.tooltip.style("display", "block");
 			bchart.tooltip.style("top", (d3.event.pageY - 20) + "px");
@@ -301,18 +308,21 @@ BarChart.prototype = {
 		bchart.svg.append("g")
 				.call(bchart.xAxis)
 					.attr("class", "x axis")
-					.attr("transform", "translate(0," + bchart.chartHeight + ")")
+					.attr("transform", "translate(0," + bchart.chartHeight + ")");
+					/*
 				.append("text")
 					.attr("y", 30)
-					.text("Population Ages Ranges");
+					.text("Population Ages Ranges");*/
 		bchart.svg.append("g")
 				.call(bchart.yAxis)
 					.attr("class", "y axis")
 					.attr("transform", "translate(-10,0)")
 				.append("text")
-					.attr("transform", "rotate(-90)")
-					.attr("y", -35)
-					.style("text-anchor", "end")
+					//.attr("transform", "rotate(-90)")
+					.attr("y", 0)
+					.attr("x", 0)
+					.style("text-anchor", "beginning")
+					.attr("class","ylabel")
 					.text("Population (in thousands)");
 
 		bchart.svg.selectAll(".bar_event_percent").remove();
@@ -320,9 +330,11 @@ BarChart.prototype = {
 		bchart.svg.selectAll(".rect_event").remove();
 		for(k = 0; k < bar.events.length; k++)
 			if (bar.events[k] != null)
-				self.drawEvent(bar.events[k], k); 
+				self.drawEvent(bar.events[k], k);
 	},
 
+	/* Gets the x-axis key for the non numerical scale  
+	*/
 	keys: function(d){
 		return d.AGE;
 	},
@@ -344,6 +356,8 @@ BarChart.prototype = {
 		}
 	},
 
+	/* Resizes the bar chart
+	*/
 	resize: function(){
 		var self = this,
 			bar = this.bchart;
@@ -359,40 +373,32 @@ BarChart.prototype = {
 		self.bchart.xScale.rangeBands([0, self.bchart.width], 0.2, 0);
 		self.bchart.yScale.range([0, self.bchart.chartHeight]);
 
-		var svg = d3.select("svg").attr({
+		bar.svg.attr({
 			width: self.bchart.width + self.bchart.margin.left + self.bchart.margin.right,
 			height: self.bchart.height + self.bchart.margin.top + self.bchart.margin.bottom
 		});
 
-		svg.select(".x.axis")
+		bar.svg.select(".x.axis")
 				.call(self.bchart.xAxis.orient("bottom"))
 				.attr("transform", "translate(0," + self.bchart.chartHeight + ")");
-		svg.select(".y.axis").call(self.bchart.yAxis.orient("left"));
-		svg.selectAll(".bar_rect").attr({
+		bar.svg.select(".y.axis").call(self.bchart.yAxis.orient("left"));
+		bar.svg.selectAll(".bar_rect").attr({
 			x: function(d) { return self.bchart.xScale(d.AGE); },
 			y: function(d) { return self.bchart.yScale(self.populationYear(d,self.bchart.year)) },
 			width: self.bchart.xScale.rangeBand(),
 			height: function(d) { return self.bchart.chartHeight - self.bchart.yScale(self.populationYear(d,self.bchart.year));}
 		});
 
-		
-		/*
-		var k = 0;
-		svg.selectAll(".rect_event")
-				.attr("y", function(d,i){ 
-					return bar.chartHeight + bar.eventPadTop + i * bar.eventHeight 
-				})
-				.attr("x", function(d){
-					return 
-				});*/
-		svg.selectAll(".rect_event").remove();
-		svg.selectAll(".bar_event_percent").remove();
-		svg.selectAll(".bar_event_text").remove();
+		bar.svg.selectAll(".rect_event").remove();
+		bar.svg.selectAll(".bar_event_percent").remove();
+		bar.svg.selectAll(".bar_event_text").remove();
 		for(k = 0; k < bar.events.length; k++)
 			if (bar.events[k] != null)
-				self.drawEvent(bar.events[k], k); 
+				self.drawEvent(bar.events[k], k);
 	},
 
+	/* Updates the chart information based on a change in its parameters  
+	*/
 	update: function(year, zone, agesRange) {
 		var self = this,
 			bar = this.bchart,
@@ -409,12 +415,12 @@ BarChart.prototype = {
 
 			var maxY = d3.max(bar.data, function(d) { return parseInt(self.populationYear(d,bar.year));});
 			self.bchart.yScale.domain([maxY, 0]);
-			d3.select(".y.axis")
+			bar.svg.select(".y.axis")
 					.transition()
 					.duration(500)
 					.call(self.bchart.yAxis.orient("left"));
 
-			d3.selectAll(".bar_rect")
+			bar.svg.selectAll(".bar_rect")
 				.data(bar.data, self.keys)
 				.transition()
 				.duration(500)
@@ -442,6 +448,9 @@ BarChart.prototype = {
 		    y = d3.select(bar.tag).style("height"),
 		    noEvents = self.getNumberActiveEvents();
 
+		if (parseInt(x) < 500)
+			bar.eventHeight = 10;
+
 		bar.width = parseInt(x) - bar.margin.left - bar.margin.right,
 		bar.height = parseInt(y) - bar.margin.top - bar.margin.bottom;
 		bar.chartHeight = bar.height - noEvents * bar.eventHeight;
@@ -465,19 +474,5 @@ BarChart.prototype = {
 		  			.attr("transform", "translate(" + bar.margin.left + "," + bar.margin.top + ")");
 
 		self.create();
-
-		//bar.height -= 15;
-		//self.resize();
-		/*
-		bar.svg.append("rect")
-				.attr("width", 100)
-				.attr("height", 15)
-				.attr("y", bar.height + 20);
-		bar.svg.append("text")
-				.attr("width", 100)
-				.attr("height", 15)
-				.attr("y", bar.height + 20)
-				.attr("x", 50)
-				.text("Name of the first event. Japan (2010).");*/
 	}
 }

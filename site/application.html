@@ -61,9 +61,9 @@
 		        <div class="navbar-header">
 		          <a class="navbar-brand page_title" href="#">Still Crazy After All These Years!</a>
 		        </div>
-		        <div id="navbar" class="navbar-collapse collapse" style="width:2000px; padding:20px">
+		        <div id="navbar" class="navbar-collapse collapse">
 		          <ul class="nav nav-pills navbar-right">
-		            <li><a class="menu_label" href="/home.html">Home</a></li>
+		            <li><a class="menu_label" href="/index.html">Home</a></li>
 		            <li><a class="menu_label" href="/howtouse.html">How to Use</a></li>
 		            <li class="active"><a class="menu_label" href="#">Application</a></li>
 		            <li><a class="menu_label" href="/data.html">Data</a></li>
@@ -84,10 +84,8 @@
 			</div>
 			<div id="controls" class="col-2">
 				<div class="map" id="map"></div>
-				<hr />
 				<div id="countries" class="btn-group btn-group-justified" role="group">
 				</div>
-				<hr />
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<span class="panel-title events-title">Events in Soccer History</span>
@@ -133,10 +131,8 @@
     <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
 
 	<script type="text/javascript">
-		var app = new App("#main", "#states");
+		var app = new App("#map", "#states");
 		app.init();
-		//var mp = new Map();
-		//mp.init("#main");
 
 		d3.select("#btn1yr").on("click", function(d){
 			updateSelectedButton("#btn1yr");

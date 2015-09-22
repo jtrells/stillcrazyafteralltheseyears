@@ -1,3 +1,5 @@
+/* Class for creating a pie chart object. It can store the data for 1 year range and 10 years range */
+
 function PieChart(data1y, data10y, year, zone, agesRange, target, typeZone){
 	this.pie = {};
 	this.pie.margin = {top: 40, right: 10, bottom: 40, left: 80};
@@ -28,6 +30,9 @@ function PieChart(data1y, data10y, year, zone, agesRange, target, typeZone){
 	this.pie.tooltip = null;
 	this.pie.eventTooltip = null;
 
+	this.pie.ytransStatePop = 0;
+	this.pie.ytransYear = 0;
+
 }
 
 PieChart.prototype = {
@@ -50,6 +55,8 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Utility function for getting the total amount of people between a range  
+	*/
 	getTotalPeople: function(startAge, endAge){
 		var self = this,
 			pie = this.pie;
@@ -66,6 +73,8 @@ PieChart.prototype = {
 		return total;
 	},
 
+	/* Creates a new pie chart. If the age range is called, the chart is recreated 
+	*/
 	create: function(){
 		var self = this
 			pie = this.pie,
@@ -94,7 +103,7 @@ PieChart.prototype = {
 			var percent = Math.round(1000 * population / total)/10;
 
 			pie.tooltip.select(".piett_label").html("Ages: " + ageLabel);
-			pie.tooltip.select(".piett_count").html(formatter(population) + " hab");
+			pie.tooltip.select(".piett_count").html(formatter(population) + " ppl");
 			pie.tooltip.select(".piett_percent").html(percent + "%");
 			pie.tooltip.style("display", "block");
 			pie.tooltip.style("top", (d3.event.pageY + 10) + "px");
@@ -155,7 +164,7 @@ PieChart.prototype = {
 		pie.svg.select(".state_name")
 			.text(pie.zone);
 		pie.svg.select(".state_pop")
-			.text(formatter(total) + " hab");
+			.text(formatter(total) + " ppl");
 		pie.svg.select(".state_year")
 			.text(pie.year);
 
@@ -166,6 +175,9 @@ PieChart.prototype = {
 			}
 	},
 
+	/* As the year data is stored in different columns, this helper function allows
+	   to get the age column for a given year 
+	*/
 	populationYear: function(d, year){
 		switch(year) {
 			case 2010:
@@ -183,10 +195,15 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Calculates the mid angle 
+	*/
 	midAngle: function(d){
 		return d.startAngle + (d.endAngle - d.startAngle)/2;
 	},
 
+	/* Updates the chart information. If the age range is not changed, the update
+	   consists of filtering the existing data with a different year or place.
+	*/
 	update: function(year, zone, agesRange){
 
 		var self = this;
@@ -244,7 +261,7 @@ PieChart.prototype = {
 			pie.svg.select(".state_name")
 					.text(pie.zone);
 			pie.svg.select(".state_pop")
-					.text(formatter(total) + " hab");
+					.text(formatter(total) + " ppl");
 			pie.svg.select(".state_year")
 					.text(pie.year);	
 
@@ -257,6 +274,8 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Resizes the graph 
+	*/
 	resize: function(){
 		var self = this;
 		var pie = this.pie;
@@ -322,6 +341,8 @@ PieChart.prototype = {
 			}
 	},
 
+	/* Adds a tooltip for each pie slice 
+	*/
 	createTooltip: function(){
 		var self = this;
 		var pie = this.pie;
@@ -337,6 +358,8 @@ PieChart.prototype = {
 				.attr("class", "piett_percent");
 	},
 
+	/* Adds a tooltip for the event displayed in the chart
+	*/
 	createEventTooltip: function(){
 		var pie = this.pie;
 
@@ -354,6 +377,9 @@ PieChart.prototype = {
 				.attr("class", "event_percent");
 	},
 
+	/* Checks if a given age is in an interval. The data was stored as string
+	   with a start age and final age in the format: "9 - 19" 
+	*/
 	isAgeInInterval: function(targetAge, arcAge){
 		var pie = this.pie;
 		if (pie.agesRange == 1){
@@ -369,6 +395,9 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Gets the angle where the event arc starts meaning the maximum age theat
+	   may remember an event  
+	*/
 	getStartAngle: function(d, targetAge, arcAge){
 		var pie = this.pie;
 		if (pie.agesRange == 1)
@@ -380,6 +409,8 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Adds a new event to the chart  
+	*/
 	addEvent: function(event){
 		var self = this,
 		    pie = this.pie;
@@ -401,6 +432,8 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Removes event 
+	*/
 	removeEvent: function(id){
 		var pie = this.pie;
 
@@ -413,6 +446,8 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Draws each event circumference using 2 arcs. 
+	*/
 	drawEventArc: function(event, pos) {
 		var pie = this.pie,
 				self = this;
@@ -480,7 +515,7 @@ PieChart.prototype = {
 				tooltip_per.classed("no-remember", false);
 				tooltip_per.classed("remember", true);
 			} else{
-				percent = 100.0 - Math.round(1000 * totalEvent / totalPeople)/10;
+				percent = Math.round(1000 * (1 - (totalEvent / totalPeople)))/10;
 				tooltip_per.classed("no-remember", true);
 				tooltip_per.classed("remember", false);
 			}
@@ -501,12 +536,22 @@ PieChart.prototype = {
 		}
 	},
 
+	/* Initializes the pie chart.
+	*/
 	init: function() {
 		var self = this;
 		var pie = this.pie;
 
 		var x = d3.select(pie.tag).style("width"),
 		    y = d3.select(pie.tag).style("height");
+
+		if (parseInt(y) < 500){
+			pie.ytransStatePop = 10;
+		    pie.ytransYear = 20;
+		} else {
+			pie.ytransStatePop = 20;
+			pie.ytransYear = 50;
+		}
 
 		pie.width = parseInt(x) - pie.margin.left - pie.margin.right,
 		pie.height = parseInt(y) - pie.margin.top - pie.margin.bottom;
@@ -552,12 +597,12 @@ PieChart.prototype = {
         		.append("text")
         		  .attr("class","state_pop")
         		  .attr("text-anchor", "middle")
-        		  .attr("transform", "translate(0,20)");
+        		  .attr("transform", "translate(0," + pie.ytransStatePop + ")");
         pie.svg.select(".state_data")
         		.append("text")
         		  .attr("class","state_year")
         		  .attr("text-anchor", "middle")
-        		  .attr("transform", "translate(0,50)");
+        		  .attr("transform", "translate(0," + pie.ytransYear + ")");
 
         self.create();
 	}

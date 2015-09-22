@@ -12,7 +12,7 @@ body {
 
 body {
 	/*font: normal 1.1em/1.5 sans-serif;*/
-	color: #222;
+	/*color: #222;*/
 	background-color: #edeff0;
 }
 
@@ -112,7 +112,89 @@ body {
 	.col-3 { width: 53%; }
 }
 
+@media only screen and (min-width: 1280px) {
+	.navbar{
+		margin-bottom: 0px;
+	}
+	#navbar{
+		width: 1000px;
+		padding: 0px;
+		margin-bottom: 0px;
+	}
+	.page_title{
+		padding-top: 10px;
+	}
+	.map{
+		width: 100%;
+		height: 220px;
+		background-color: grey;
+	}
+	.col-1 { 
+		width: 18%; 
+	}
+	.col-2 { width: 22%; }
+	.col-3 { 
+		width: 60%; 
+		height: 700px;
+		padding: 5px;
+	}
+	#states{
+		padding: 10px;
+		font-size: 10px;
+	}
+	#dashbord-control{
+		font-size: 20px;
+	}
+	.page_title{
+		font-size: 20px;
+	}
+	.menu_label{
+		font-size: 12px;
+	}
+	.btn-lg{
+		font-size: 12px;
+	}
+	.events-title{
+		font-size: 13px !important;
+		font-weight: bold !important;
+	}
+	.event-item{
+		font-size: 10px;
+	}
+	.event-year{
+		font-size: 10px;
+	}
+	#graph_container_top{
+		height: 45%;
+	}
+
+	#graph_container_bottom{
+		height: 45%;
+	}
+
+	#dashbord-control-1{
+		height: 5%;
+	}
+	#dashbord-control-2{
+		height: 5%;
+	}
+	#pc0, #pc1, #pc2, #bc0, #bc1, #bc2 {
+		width: 33%
+	}
+	#pc3, #pc4, #bc3, #bc4{
+		width: 0%;
+		display: none;
+	}
+}
+
 @media only screen and (min-width: 8000px) {
+	#navbar{
+		width:2000px; 
+		padding:20px;
+	}
+	.page_title {
+		padding-top: 50px;
+	}
 	.map{
 		width: 100%;
 		height: 700px;
@@ -146,13 +228,18 @@ body {
 		width: 69%; 
 		height: 1800px;
 	}
-
-
 	#states{
 		padding: 50px;
 		font-size: 38px;
 	}
 	#dashbord-control{
 		font-size: 50px;
+	}
+	#pc0, #pc1, #pc2, #bc0, #bc1, #bc2 {
+		width: 20%;
+	}
+	#pc3, #pc4, #bc3, #bc4{
+		width: 20%;
+		display: block;
 	}
 }

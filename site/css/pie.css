@@ -65,6 +65,58 @@
 .event_percent.no-remember{
 	color: #f03b20;
 }
+.event_arc:hover{
+	fill: steelblue;
+}
+
+@media only screen and (min-width: 1280px) {
+	.pie_tooltip {
+		width: 150px;
+	}
+	.piett_label {
+		font-size: 12px;
+	}
+	.piett_count {
+		font-size: 12px;
+	}
+	.piett_percent {
+		font-size: 12px;
+	}
+	.state_name{
+		font-size: 10px;
+		font-weight: bold;
+	}
+	.state_pop{
+		font-size: 8px;
+	}
+	.state_year{
+		font-size: 8px;
+	}
+	.slice_label{
+		font-size: 8px;
+	}
+	.event_tooltip {
+		width: 150px;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+	.event_name {
+		font-size: 12px;
+	}
+	.event_year {
+		font-size: 10px;
+	}
+	.event_country {
+		font-size: 10px;
+	}
+	.event_percent{
+		font-size: 18px;
+	}	
+	.bar_event_text{
+		display: none;
+	}
+}
 
 @media only screen and (min-width: 8000px) {
 	.pie_tooltip {

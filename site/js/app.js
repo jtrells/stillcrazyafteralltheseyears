@@ -1,17 +1,19 @@
 /*
 	Map: Object for displaying the USA states information
 */
-function Map() {
+function Map(data, tag) {
 	this.map = {};
 	this.map.width = 800;
 	this.map.height = 600;
 	this.map.svg = null;
-	this.map.tag = "";
+	this.map.tag = tag;
 	this.map.popUsaData = null;
 	this.map.color = d3.scale.quantize()
 						.range(["rgb(177,0,38)","rgb(227,26,28)","rgb(252,78,42)","rgb(253,141,60)",
 							    "rgb(254,178,76)","rgb(254,217,118)","rgb(255,255,178)"]);
 	this.map.color.domain([0,0]);
+
+	this.map.data = data;
 
 	this.map.projection = null;
 	this.map.path = null;
@@ -27,23 +29,12 @@ Map.prototype = {
 		selectedState.classed("selected", true);
 	},
 
-	displayMapCallback: function(err, data) {
-		if (err) console.error(err);
-
+	create: function() {
 		var self = this;
 
 		// Gets data for total population per state
 		this.map.popUsaData = 
-			data.filter(function(el){ return el.AGE == "999" && el.NAME !="United States" && el.SEX == "2" });
-
-		// List of states (Needs to get data from popUsaData as the states are not repeated.)
-		var states = d3.select("#states")
-			   .selectAll("p")
-				.data(this.map.popUsaData)
-			    .enter().append("p")
-			    .attr("class", "us-state")
-			  	.text( function(d, i) { return d.NAME });
-		states.on("click", function(d){ self.selectState(d); });
+			self.map.data.filter(function(el){ return el.AGE == "999" && el.NAME !="United States" && el.SEX == "2" });
 
 		this.map.color.domain([
 				d3.min(this.map.popUsaData, function(d) { return d.POPEST2014_CIV; }), 
@@ -93,41 +84,46 @@ Map.prototype = {
 		});
 	},
 
-	init: function(target) {
-		this.map.tag = target;
-		var x = d3.select(this.map.tag).style("width");
+	init: function() {
+		var self = this,
+			map = this.map;
+
+		var x = d3.select(map.tag).style("width");
+		var y = d3.select(map.tag).style("height");
 
 		var margin = {top: 10, right: 10, bottom: 20, left: 10};
-		var width = parseInt(x) - margin.left - margin.right,
-			mapRatio = 0.5,
-			height = mapRatio * width;
+		var width = parseInt(x) - margin.left - margin.right;
+		//var mapRatio = 0.7;
+		//var height = mapRatio * width;
+		var height = parseInt(y) - margin.top - margin.bottom;
 
 		// Define the map selector projection
 		this.map.projection = d3.geo.albersUsa()
-							.translate([this.map.width/2, this.map.height/2])
-							.scale([1000]);
+							.translate([map.width/2, map.height/2])
+							.scale([1250]);
 
 		// Define the geo path generator
 		this.map.path = d3.geo.path()
-					 .projection(this.map.projection);
+					 .projection(map.projection);
 
-		this.map.svg = d3.select(target).append("svg")
+		this.map.svg = d3.select(map.tag).append("svg")
 			.attr({
 				width: width + margin.left + margin.right,
 				height: height + margin.top + margin.bottom,
-				viewBox: "0 0 " + this.map.width + " " + this.map.height,
-				preserveAspectRatio: "xMinYMin meet"
+				//viewBox: "0 0 " + this.map.width + " " + this.map.height,
+				//preserveAspectRatio: "xMinYMin meet"
 			})
 		  .append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		    .attr("transform", "translate(" + width/5 + "," + margin.top + ")");
 
-		var self = this;
-		d3.csv("./data/usa_data_10y.csv", function(err, data) {
-			self.displayMapCallback(err, data);
-		});
+		self.create();
 	}
 };
 
+
+/* 
+	Class that represent each pair of graphs for a selected location 
+*/
 function Dashlet(name, pieDashletId, barDashletId, bar, pie, type){
 	this.name = name;
 	this.pieDashletId = pieDashletId;
@@ -166,22 +162,24 @@ Dashlet.prototype = {
 }
 
 
-//Application
+/* 
+	MAIN APPLICATION 
+*/
 function App(mapTag, statesTag) {
 	this.app = {};
-	this.app.map = null;
-	this.app.values = [];
+	this.app.map = null;					// Stores the map graph
+	this.app.values = [];					// Stores each of the selected pair of graphs
 	this.app.countries = ["Peru", "Uruguay", "Japan", "Germany", "Mexico"];
-	this.app.events = null;
-	this.app.selectedEvents = [];
+	this.app.events = null;					// Total events available to show
+	this.app.selectedEvents = [];			// Events that should be reflected on the graphs
 
-	this.app.tagMap = mapTag;
-	this.app.tagStates = statesTag;
+	this.app.tagMap = mapTag;				// Id of the DOM element that contains the map
+	this.app.tagStates = statesTag;			// Id of the DOM element that contains the states information
 
-	this.app.data1yUsa = null;
-	this.app.data10yUsa = null;
-	this.app.data1yInt = null;
-	this.app.data10yInt = null;
+	this.app.data1yUsa = null;				// Data for USA and states in 1 year range
+	this.app.data10yUsa = null;				// Data for USA and states in 10 years range
+	this.app.data1yInt = null;				// Data for the International Database in 1 year range
+	this.app.data10yInt = null;				// Data for the International Database in 10 years range
 };
 
 App.prototype = {
@@ -216,6 +214,8 @@ App.prototype = {
 			  });
 	},
 
+	/* Update each of the pair of graphs that the application should store and show  
+	*/
 	updateValues: function(element, typeZone){
 		var self = this,
 			app = this.app,
@@ -242,7 +242,7 @@ App.prototype = {
 
 				// If country remove style
 				if (typeZone == "country"){
-					var btn = d3.selectAll("#btn-" + element.trim());
+					var btn = d3.selectAll("#btn-" + element.trim().replace(" ",""));
 					btn.classed("btn-primary", false);
 					btn.classed("btn-default", true);
 				}
@@ -289,6 +289,9 @@ App.prototype = {
 		}
 	},
 
+	/*
+		Tells the graphs to show the selected event
+	*/
 	selectEvent: function(event){
 		var self = this,
 			app = this.app,
@@ -334,6 +337,9 @@ App.prototype = {
 			return "#" + dashlets[0][0].id;
 	},
 
+	/*
+		Add the countries (except USA) to the countries bar
+	*/
 	createCountries: function(){
 		var app = this.app,
 			self = this;
@@ -354,6 +360,9 @@ App.prototype = {
 			});
 	},
 
+	/*
+		Add the events to the list
+	*/
 	createEvents: function(){
 		var self = this, 
 			app = this.app;
@@ -464,6 +473,9 @@ App.prototype = {
 				.text( function(d){ return d.year })
 	},
 
+	/*
+		Creates the years controllers
+	*/
 	createYearsControllers: function(){
 		var years = [2010, 2011, 2012, 2013, 2014],
 			app = this.app;
@@ -476,8 +488,8 @@ App.prototype = {
 			.append("button")
 				.attr("type", "button")
 				.attr("class", function(d){
-					if (d == 2014) return "btn btn-primary btn-lg age-range";
-					else return "btn btn-default btn-lg age-range";
+					if (d == 2014) return "btn btn-primary btn-lg";
+					else return "btn btn-default btn-lg";
 				})
 				.html(function(d){ return d; })
 				.on("click", function(d){
@@ -490,6 +502,9 @@ App.prototype = {
 				});
 	},
 
+	/*
+		Starts the application
+	*/
 	init: function() {
 		var self = this,
 			app = this.app;
@@ -514,6 +529,8 @@ App.prototype = {
 						self.createCountries();
 						self.createEvents();
 						self.createYearsControllers();
+						var map = new Map(app.data10yUsa, app.tagMap);
+						map.init();
 					});
 				});
 			});

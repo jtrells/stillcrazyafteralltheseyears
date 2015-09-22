@@ -9,7 +9,9 @@
  .bar_rect:hover {
  	fill: brown;
  }
-
+ .rect_event:hover{
+ 	fill: steelblue;
+ }
  .bar-label {
       text-anchor: end;
  }
@@ -88,10 +90,47 @@
 	font-size: 10px;
 }
 
-@media only screen and (min-width: 8000px) {
+@media only screen and (min-width: 1280px) {
+	.tick text {
+		font-size: 8px;
+	}
+	 .x.axis text {
+	      font-size: 8px;
+	 }
+	.bar_age_tooltip{
+		width: 150px;
+	}
+	.bar_age_label {
+		font-size: 10px;
+	}
+	.bar_age_count{
+		font-size: 10px;
+	}
+	.bar_age_percent{
+		font-size: 10px;
+	}
+	.event_tooltip {
+		width: 150px;
+	}
+	.bar_event_percent{
+		font-size: 10px;
+	}
+	.bar_event_text{
+		font-size: 10px;
+	}	
+	.ylabel{
+		font-size:10px;
+	}
+}
+
+
+@media only screen and (min-width: 3000px) {
 	.tick text {
 		font-size: 25px;
 	}
+	 .x.axis text {
+	      font-size: 25px;
+	 }
 	.bar_age_tooltip{
 		width: 350px;
 	}
@@ -112,6 +151,9 @@
 	}
 	.bar_event_text{
 		font-size: 23px;
+	}
+	.ylabel{
+		font-size:20px;
 	}
 
 }
